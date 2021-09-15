@@ -1,6 +1,7 @@
 Version 0.1 Week 1 & 2
 - Created GutHub
 - Added Simple HTML/CSS/Javascript Webpage
+- added spell.py with langdetect and enchant
 
 Version 0.3 Week 3
 - Added Spellchecker Function 
