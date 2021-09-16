@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<body style="text-align: center;">
+
+<form action="/home" method="POST">
+
+	<h1>Grammar and Spelling Checker</h1>
+
+	<label for="inputtext">Enter your sentence below</label>
+	<br><br>
+	<textarea id="name" name="name" style="text-align: center;" placeholder="Place your text here" rows="9" cols="70" ></textarea>
+	<br><br>
+    
+	<input type="Submit" class="file_submit">
+	<br><br>
+
+    <label for="outputtext"> Output </label>
+	<br><br>
+	
+	<h4> {% if name %} {{name}}	{% endif %}</h4>
+
+	<br><br>
+	<p>Click the "Submit" button to check spelling and grammar errors</p>
+
+</form>
+</body>
+</html>
