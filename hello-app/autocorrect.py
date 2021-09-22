@@ -11,9 +11,8 @@ LANGUAGES = ast.literal_eval(open("language_short_names.txt", "r").read())
 class Autocorrect:
     def __init__(self, language = 'en-US') -> None:
         self.language = language
-        self.tool = self.load_dictionary()
-        self._suggest = self.Hunspell()
-
+        self.tool = self.load_dictionary() 
+        self._hunspell = Hunspell()
     def language_detect(self,input_string = None) -> str:
         if input_string != None:
             self.input_string = input_string
@@ -32,9 +31,10 @@ class Autocorrect:
         return self.tool.check(self.input_string)
 
     def suggestion(self,single_word): # with probability
-        self._single_word = single_word
-        return self._suggest(self._single_word)
+        if not self._hunspell.spell(single_word):
+            return self._hunspell.suggest(single_word)
+        else:
+            return None
 
     def correct(self,input_string):
         return self.tool.correct(input_string)
-    
