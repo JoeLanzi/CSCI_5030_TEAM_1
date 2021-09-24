@@ -33,8 +33,8 @@ class Autocorrect:
     def suggestion(self,single_word): # with probability
         if not self._hunspell.spell(single_word):
             return self._hunspell.suggest(single_word)
-        else:
-            return None
+        elif len(self._hunspell.suffix_suggest(single_word)) != 0:
+            return self._hunspell.suffix_suggest(single_word)
 
     def correct(self,input_string):
         return self.tool.correct(input_string)
