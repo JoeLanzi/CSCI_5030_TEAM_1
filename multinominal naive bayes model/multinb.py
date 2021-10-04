@@ -5,8 +5,6 @@ data = pd.read_csv('language-dataset.csv')
 languages = set(data['language'])
 print('Languages', languages)
 
-
-
 # %% Train Test Split
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -15,8 +13,6 @@ X=data['Text']
 y=data['language']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
-
-
 
 #%% Aggregate Unigrams per language
 def train_lang_dict(X_raw_counts, y_train):
@@ -99,6 +95,7 @@ from sklearn.metrics import confusion_matrix, f1_score
 import seaborn as sn
 import matplotlib.pyplot as plt
 import scipy
+import pickle
 
 # Utils for conversion of different sources into numpy array
 def toNumpyArray(data):
@@ -148,6 +145,12 @@ def plot_Confusion_Matrix(y_test, y_predict, color="Blues"):
     plt.show()
 
 
+#%% MultiNB
+# Top 1%
+X_top1Percent_train, X_top1Percent_test = normalizeData(X_top1Percent_train_raw, X_top1Percent_test_raw)
+y_predict_nb_top1Percent = applyNaiveBayes(X_top1Percent_train, y_train, X_top1Percent_test)
+plot_F_Scores(y_test, y_predict_nb_top1Percent)
+plot_Confusion_Matrix(y_test, y_predict_nb_top1Percent, "Reds")
 
 # %% Applying Multinominal NB to Top 50 n-grams
 X_top50_train, X_top50_test = normalizeData(X_top50_train_raw, X_top50_test_raw)
@@ -155,13 +158,32 @@ y_predict_nb_top50 = applyNaiveBayes(X_top50_train, y_train, X_top50_test)
 plot_F_Scores(y_test, y_predict_nb_top50)
 plot_Confusion_Matrix(y_test, y_predict_nb_top50, "Greens")
 
+#%% KNN
+from sklearn.neighbors import KNeighborsClassifier
 
+def applyNearestNeighbour(X_train, y_train, X_test):
+    trainArray = toNumpyArray(X_train)
+    testArray = toNumpyArray(X_test)
+    
+    clf = KNeighborsClassifier()
+    clf.fit(trainArray, y_train)
+    y_predict = clf.predict(testArray)
+    return y_predict
+
+# Top 50
+y_predict_knn_top50 = applyNearestNeighbour(X_top50_train, y_train, X_top50_test)
+plot_F_Scores(y_test, y_predict_knn_top50)
+plot_Confusion_Matrix(y_test, y_predict_knn_top50, "Blues")
+
+
+
+###################################################################################
 # %% Training Model w/ top 50 n-grams to Save
 import pickle
 from sklearn.naive_bayes import MultinomialNB
 
 model = MultinomialNB()
-model.fit(X_top50_train, y_train)
+model.fit(X_top1Percent_train, y_train)
 
 # save the model to disk
 modelname = 'multinb.pickle'
@@ -170,5 +192,40 @@ pickle.dump(model, open(modelname, 'wb'))
 
 # %% Load the model & test accuracy
 loaded_model = pickle.load(open('multinb.pickle', 'rb'))
-result = loaded_model.score(X_top50_test, y_test)
+result = loaded_model.score(X_top1Percent_test, y_test)
 print(result)
+
+
+##################################################################################
+# %% MultiNM Test
+test = pd.read_csv('test.csv')
+X_test = test['Text']
+y_test = test['language']
+
+X_top1Percent_test_raw = top1PrecentMixtureVectorizer.transform(X_test)
+X_top1Percent_test = normalize(X_top1Percent_test_raw, norm='l2', axis=1, copy=True, return_norm=False)
+
+loaded_model.score(X_top1Percent_test,y_test)
+
+testArray = toNumpyArray(X_top1Percent_test)
+
+results = loaded_model.predict(testArray)
+
+# %%
+test['Result'] = results
+pd.DataFrame(test).to_csv("short_test.csv",index=None)
+
+
+# %% KNN Test
+knnmodel = KNeighborsClassifier()
+knnmodel.fit(X_top1Percent_train, y_train)
+
+print(knnmodel.score(X_top1Percent_test,y_test))
+
+testArray = toNumpyArray(X_top1Percent_test)
+
+results = knnmodel.predict(testArray)
+
+test['Result'] = results
+test
+# %%
