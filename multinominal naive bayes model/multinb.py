@@ -199,20 +199,17 @@ print(result)
 ##################################################################################
 # %% MultiNM Test
 test = pd.read_csv('test.csv')
-X_test = test['Text']
-y_test = test['language']
 
-X_top1Percent_test_raw = top1PrecentMixtureVectorizer.transform(X_test)
-X_top1Percent_test = normalize(X_top1Percent_test_raw, norm='l2', axis=1, copy=True, return_norm=False)
+X_top1Percent_test_raw_test = top1PrecentMixtureVectorizer.transform(test['Text'])
+X_top1Percent = normalize(X_top1Percent_test_raw_test, norm='l2', axis=1, copy=True, return_norm=False)
 
-loaded_model.score(X_top1Percent_test,y_test)
+loaded_model.score(X_top1Percent,test['language'])
 
-testArray = toNumpyArray(X_top1Percent_test)
+modeltestArray = toNumpyArray(X_top1Percent)
 
-results = loaded_model.predict(testArray)
-
-# %%
+results = loaded_model.predict(modeltestArray)
 test['Result'] = results
+
 pd.DataFrame(test).to_csv("short_test.csv",index=None)
 
 
