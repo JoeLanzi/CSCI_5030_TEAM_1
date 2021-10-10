@@ -1,4 +1,5 @@
 import unittest
+from ..python_backend.autocorrect import Autocorrect
 
 class TestAutocorrect(unittest.TestCase):
 
