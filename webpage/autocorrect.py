@@ -1,4 +1,4 @@
-#%%
+# Autocorrect class spelling + grammar
 import ast
 from langdetect import detect,DetectorFactory
 from preprocess import to_n_gram
@@ -62,5 +62,3 @@ class Autocorrect:
     # Output Grammer + Spelling correction
     def correct(self,input_string):
         return self.tool.correct(input_string)
-
-# %%

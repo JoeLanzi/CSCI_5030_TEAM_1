@@ -1,4 +1,4 @@
-#%% Preprocess Data for Model Prediction
+# Preprocess Data for Model Prediction
 import pickle 
 import numpy as np
 import pandas as pd
@@ -24,8 +24,6 @@ def to_n_gram(text):
     top1 = toNumpyArray(normalize(X_top1Percent_test_raw_test, norm='l2', axis=1, copy=True, return_norm=False))
     return top1
 
-# %% Tests
-loaded_model = pickle.load(open('../model_training/models/knn.pickle', 'rb'))
-loaded_model.predict(to_n_gram("what on earth"))[0]
-
-# %%
+# Tests
+# loaded_model = pickle.load(open('../model_training/models/knn.pickle', 'rb'))
+# loaded_model.predict(to_n_gram("what on earth"))[0]
