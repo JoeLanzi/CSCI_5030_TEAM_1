@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from ..python_backend.autocorrect import Autocorrect
+from autocorrect import Autocorrect
 
 
 app = Flask(__name__)
