@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {background-color: powderblue;}
+h1{color: blue;}
+    p {
+        color: red;
+        
+    }
+</style>
+</head>
+
+<body style="text-align: center;">
+
+<form action="/home" method="POST">
+
+	<h1>Grammar and Spelling Checker</h1>
+
+	<label for="inputtext">Enter your sentence below</label>
+	<br><br>
+	<textarea id="name" name="name" style="text-align: left;" placeholder="Place your text here" rows="11" cols="100" ></textarea>
+	<br><br>
+    
+	<input type="Submit" class="file_submit">
+	<br><br>
+
+    <label for="outputtext"> Output </label>
+	<br><br>
+	
+	<h4> {% if name %} {{name}}	{% endif %}</h4>
+
+	<br><br>
+	<p>Click the "Submit" button to check spelling and grammar errors</p>
+
+</form>
+</body>
+</html>
