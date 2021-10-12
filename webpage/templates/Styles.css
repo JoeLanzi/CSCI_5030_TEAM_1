@@ -1,0 +1,22 @@
+﻿
+body {
+    background-color: powderblue;
+    background-image: url('paper.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left;
+
+    
+   
+}
+
+h1 {
+    color: blue;
+}
+
+p {
+    color: red;
+    border: 3px solid powderblue;
+}
+
+
