@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="Styles.css">
-	
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
 </head>
+
+<div class="dropdown">
+  <button class="dropbtn">Language</button>
+  <div class="dropdown-content">
+    <a href="index2.html">Irish</a>
+   
+  </div>
+</div>
 
 <body style="text-align: center;">
 
@@ -22,7 +29,7 @@
     <label for="outputtext"> Output </label>
 	<br><br>
 	
-	<h4> {% if name %} {{name}}	{% endif %}</h4>
+	<h4> {% if name %} {{name}}	{% endif %} </h4>
 
 	<br><br>
 	<p>Click the "Submit" button to check spelling and grammar errors</p>
