@@ -5,6 +5,7 @@ data = pd.read_csv('language-dataset.csv')
 languages = set(data['language'])
 print('Languages', languages)
 
+#df1 = data[data.iloc[:,-1]=='English'] # return english only
 # %% Train Test Split
 import numpy as np
 from sklearn.model_selection import train_test_split
