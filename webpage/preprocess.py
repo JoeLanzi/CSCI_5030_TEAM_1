@@ -18,14 +18,14 @@ def toNumpyArray(data):
     
 # Uni- & Bi-Gram Mixture CountVectorizer for top 1% features
 def to_n_gram(text):
-    top1PrecentMixtureVectorizer = pickle.load(open('../model_training/models/vectorized_grams', 'rb'))
+    top1PrecentMixtureVectorizer = pickle.load(open('../model_training/new_models/vectorized_grams', 'rb'))
     text = pd.Series([text]) if type(text) == str else text
     X_top1Percent_test_raw_test = top1PrecentMixtureVectorizer.transform(text)
     top1 = toNumpyArray(normalize(X_top1Percent_test_raw_test, norm='l2', axis=1, copy=True, return_norm=False))
     return top1
 
-# %% Tests
-loaded_model = pickle.load(open('../model_training/models/knn.pickle', 'rb'))
-loaded_model.predict(to_n_gram("what on earth"))[0]
+# %% Testscd Desktop
+#loaded_model = pickle.load(open('../model_training/new_models/multinb.pickle', 'rb'))
+#loaded_model.predict(to_n_gram("an lá go mbeidh meáin na Gaeilge agus an Bhéarla ar comhchéim? http://t.co/Fbd9taS via @Twitter slán slán, ag dul chuig rang spin"))[0]
 
 # %%
