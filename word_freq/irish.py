@@ -11,7 +11,7 @@ data = data1[0]+data2[0]+data3[0]+data4[0]+data5[0]
 words = []
 for i in data:
     for j in str(i).split():
-        if str(j) != 'nan':
+        if str(j).lower() != 'nan':
             words.append(j.lower())
 
 #%% remove punctuation & numbers from each words
