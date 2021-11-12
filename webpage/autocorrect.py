@@ -52,5 +52,17 @@ class Autocorrect:
         return self.tool.correct(input_string)
 
 # %% Tests
-#correct = Autocorrect()
-#correct.language_detect("an lá go mbeidh meáin na Gaeilge agus an Bhéarla ar comhchéim? http://t.co/Fbd9taS via @Twitter slán slán, ag dul chuig rang spin")
+'''
+# language_detect
+correct = Autocorrect()
+correct.language_detect("an lá go mbeidh meáin na Gaeilge agus an Bhéarla ar comhchéim? http://t.co/Fbd9taS via @Twitter slán slán, ag dul chuig rang spin")
+
+# load_dictionary
+correct = Autocorrect()
+correct.load_dictionary('ga')
+LANGUAGES[correct.language]
+
+# checker
+correct = Autocorrect()
+correct.checker("this is a sample string")
+'''

@@ -13,6 +13,9 @@ test = Autocorrect()
 def index():
     return render_template("index.html")
 
+
+# highlight grammar error, like repeats, & mispelling
+
 @app.route("/home",methods = ["POST","GET"])
 def result():
     name = request.form['name']
