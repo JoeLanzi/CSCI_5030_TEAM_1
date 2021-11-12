@@ -3,8 +3,6 @@ import pickle
 import itertools
 from collections import Counter
 
-from spell import candidates
-
 class Checker():
     def __init__(self, language = 'en-US') -> None:
         self.language = language
@@ -88,7 +86,7 @@ class Checker():
         correct_grammar = {}
 
         if len(split) < 2:
-            correct_grammar[sentence] = candidates(sentence)
+            correct_grammar[sentence] = self.candidates(sentence)
 
         else:
             for i in range(len(split)-1):
