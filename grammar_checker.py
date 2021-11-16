@@ -81,6 +81,8 @@ class Checker():
     # collects grammar corrections and repeated words
     def tool(self,sentence):
         split = sentence.split()
+        if not split[-1][-1].isalpha(): #considering the punctuation at the end of the sentence
+            split[-1] = split[-1][:-1]
         corrected = False
         repeated_words = []
         correct_grammar = {}
