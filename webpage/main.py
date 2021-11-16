@@ -19,6 +19,7 @@ def index():
 @app.route("/home",methods = ["POST","GET"])
 def result():
     sentence = request.form['name']
+    sentence = sentence.lower()
     autocorrect.language_detect(sentence)
     suggestions = autocorrect.suggestion(sentence.lower())
     newlist = []
@@ -26,7 +27,7 @@ def result():
     for i in range(len(sentence.split())):
         try:
             if sentence.split()[i] == sentence.split()[i+1]:
-                newlist.append('<span style="color: red;"><strike>'+sentence.split()[i]+'</strike></span>')
+                newlist.append('<span class="repeat" style="color: red;"><strike>'+sentence.split()[i]+'</strike></span>')
                 continue
             elif ' '.join([sentence.split()[i],sentence.split()[i+1]]) in suggestions[1]:
                 newlist.append(sentence.split()[i])
