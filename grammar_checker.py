@@ -2,6 +2,7 @@
 import pickle
 import itertools
 from collections import Counter
+import math
 
 class Checker():
     def __init__(self, language = 'en-US') -> None:
@@ -31,9 +32,17 @@ class Checker():
     def correction(self,word):
         return max(self.candidates(word), key=self.P)
 
+    # one edit for words of up to four characters 
+    # two edits for up to twelve characters
+    # three for longer words
     # generate possible spelling correciton for word
     def candidates(self,word):
-        return (self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) | self.known(self.edits3(word)) or set([word]))
+        if len(word)<5:
+            return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word))  or set([word])
+        elif len(word)>=5 and len(word)<12:
+            return self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
+        else:
+            return (self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) | self.known(self.edits3(word)) or set([word]))
 
     # in dictionary
     def known(self,words): 
@@ -92,7 +101,7 @@ class Checker():
             for i in range(len(split)-1):
                 bigram = ' '.join([split[i],split[i+1]])
                 checked = self.checker(bigram)
-                new_check = list(checked.keys())[:int(len(checked)*0.9)]
+                new_check = list(checked.keys())[:math.ceil(len(checked)*0.9)]
                 
                 if(split[i]==split[i+1]):
                     corrected = True
@@ -117,6 +126,7 @@ class Checker():
         return sentence.replace(word,replacement,1)
 
 # %% TESTS
+'''
 checker = Checker('en')
 
 sample_sentence = "this might be the the end of this sentece"
@@ -127,7 +137,7 @@ print('Repeated words: ', checker.repeated_words)
 print('Grammar suggestions: ', checker.correct_grammar)
 sample_sentence = checker.delete(sample_sentence,checker.repeated_words[-1])
 print('Delete repeats: ', sample_sentence)
-sample_sentence = checker.replace(sample_sentence,list(checker.correct_grammar.keys())[0],list(checker.correct_grammar.values())[0][3])
-print('Replace grammar: ', sample_sentence)
 
-# %%
+sample_sentence = checker.replace(sample_sentence,list(checker.correct_grammar.keys())[0],list(checker.correct_grammar.values())[0][0])
+print('Replace grammar: ', sample_sentence)
+'''
