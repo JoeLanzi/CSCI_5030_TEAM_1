@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+</head>
+
+<div class="dropdown">
+    <button class="dropbtn">Teanga</button>
+    <div class="dropdown-content">
+        <a href="index.html">English</a>
+
+    </div>
+</div>
+
+<body style="text-align: center;">
+
+    <form action="/home" method="POST">
+
+        <h1>Seiceálaí Gramadaí agus Litrithe</h1>
+
+        <label for="inputtext">Iontráil d’abairt thíos</label>
+        <br><br>
+        <textarea id="name" name="name" placeholder="Cuir do théacs anseo" rows="11" cols="100"></textarea>
+        <br><br>
+
+        <input type="Submit" class="file_submit">
+        
+        <input  type="reset" value="soiléir">
+		<br><br>
+		
+            <label for="outputtext"> Aschur </label>
+        <br><br>
+
+        <h4> {% if name %} {{name}}	{% endif %} </h4>
+
+        <br><br>
+            <p>Cliceáil ar an gcnaipe "Cuir isteach" chun earráidí litrithe agus gramadaí a sheiceáil</p>
+
+    </form>
+</body>
+</html>

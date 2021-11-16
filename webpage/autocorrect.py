@@ -16,26 +16,14 @@ class Autocorrect:
         self._hunspell = Hunspell()
     
     # Detects language
-    def language_detect(self,input_string = None, model = "nb") -> str:
+    def language_detect(self,input_string = None) -> str:
         if input_string != None:
             self.input_string = input_string
 
-            # Language Identification using knn
-            if model == "knn":
-                loaded_model = pickle.load(open('../model_training/models/knn.pickle', 'rb'))
-                predict_lang = loaded_model.predict(to_n_gram(self.input_string))[0]
-                self.language = [k for k, v in LANGUAGES.items() if v == predict_lang][0]
-            
-            # Language Identification using langdetect
-            elif model == 'ld':
-                DetectorFactory.seed = 0
-                self.language = 'en-US' if detect(self.input_string) == 'en' else detect(self.input_string)
-
             # Language Identification using multinb
-            else:
-                loaded_model = pickle.load(open('../model_training/models/multinb.pickle', 'rb'))
-                predict_lang = loaded_model.predict(to_n_gram(self.input_string))[0]
-                self.language = [k for k, v in LANGUAGES.items() if v == predict_lang][0]
+            loaded_model = pickle.load(open('../model_training/new_models/multinb.pickle', 'rb'))
+            predict_lang = loaded_model.predict(to_n_gram(self.input_string))[0]
+            self.language = [k for k, v in LANGUAGES.items() if v == predict_lang][0]
         
         print("Loading Dictionary")
         self.tool = self.load_dictionary()
@@ -63,4 +51,18 @@ class Autocorrect:
     def correct(self,input_string):
         return self.tool.correct(input_string)
 
-# %%
+# %% Tests
+'''
+# language_detect
+correct = Autocorrect()
+correct.language_detect("an lá go mbeidh meáin na Gaeilge agus an Bhéarla ar comhchéim? http://t.co/Fbd9taS via @Twitter slán slán, ag dul chuig rang spin")
+
+# load_dictionary
+correct = Autocorrect()
+correct.load_dictionary('ga')
+LANGUAGES[correct.language]
+
+# checker
+correct = Autocorrect()
+correct.checker("this is a sample string")
+'''
