@@ -40,17 +40,40 @@ class Autocorrect:
 
     # Output Grammer + Spelling correction
     def correct(self,input_string):
-        return self.tool.correct(input_string)
+        #return self.tool.correct(input_string)
+        pass
 
 # %% Tests
-
-# language_detect
+'''
 correct = Autocorrect()
-correct.language_detect("an lá go mbeidh meáin na Gaeilge agus an Bhéarla ar comhchéim? http://t.co/Fbd9taS via @Twitter slán slán, ag dul chuig rang spin")
-
-# %% load_dictionary
+sentence = "an lá go mbeidh meáin na Gaeilge agus an Bhéarla ar comhchéim"
+correct.language_detect(sentence.lower()) 
+correct.suggestion(sentence.lower())
+'''
+#%% Spell check for html
+'''
+sentence = "this is a a sample sentece"
 correct = Autocorrect()
-correct.load_dictionary('en')
-LANGUAGES[correct.language]
-
+correct.language_detect(sentence)
+samplelist = correct.suggestion(sentence)
+# %%
+newlist = []
+corrected = False
+for i in range(len(sentence.split())):
+    try:
+        if sentence.split()[i] == sentence.split()[i+1]:
+            newlist.append('<div class="err">'+sentence.split()[i]+'</div>')
+            continue
+        elif ' '.join([sentence.split()[i],sentence.split()[i+1]]) in samplelist[1]:
+            newlist.append('<div class="err">'+' '.join([sentence.split()[i],sentence.split()[i+1]])+'</div>')
+            corrected = True
+            continue
+        newlist.append(sentence.split()[i])
+    except IndexError:
+        if not corrected:
+            newlist.append(sentence.split()[i])
+        else:
+            pass
+' '.join(newlist)
+'''
 

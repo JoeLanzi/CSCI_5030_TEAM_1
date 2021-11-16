@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
+
 <head>
-		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/styles.css') }}">
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/newstyles.css') }}">
 </head>
 
-<div class="dropdown">
-  <button class="dropbtn">Language</button>
-  <div class="dropdown-content">
-    <a href="irish.html">Irish</a>
-   
-  </div>
-</div>
+<div id="google_translate_element"></div>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 
 <body style="text-align: center;">
 
@@ -20,12 +24,12 @@
 
 		<label for="inputtext">Enter your sentence below</label>
 		<br><br>
-		<textarea id="name" name="name" placeholder="Place your text here" rows="11" cols="100"></textarea>
+		<textarea id="name" name="name" placeholder="Place your text here" rows="15" cols="120" ></textarea>
 		<br><br>
 
-		<input type="Submit" class="file_submit">
+		<input type="Submit" class="file_submit"></input>
 		
-		<input  type="reset" value="clear">
+		<input  type="reset" value="Clear">
 		<br><br>
 		
 
@@ -33,9 +37,8 @@
 		<label for="outputtext"> Output </label>
 		<br><br>
 
-
-
-		<h4> {% if name %} {{name}}	{% endif %} </h4>
+		<h4> 
+					{% if name %}{{name|safe}}{% endif %} </h4>
 
 		<br><br>
 		<p>Click the "Submit" button to check spelling and grammar errors</p>
