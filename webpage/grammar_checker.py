@@ -15,12 +15,12 @@ class Checker():
     def load_dictionary(self,language = None):
         language = self.language if language == None else language
         if language in ['en','en-US']:
-            self.DICTIONARY = pickle.load(open('corpus/en_unigram.pickle', 'rb'))
-            self.BIGRAMS = pickle.load(open('corpus/en_bigram.pickle', 'rb'))
+            self.DICTIONARY = pickle.load(open('../corpus/en_unigram.pickle', 'rb'))
+            self.BIGRAMS = pickle.load(open('../corpus/en_bigram.pickle', 'rb'))
             self.LETTERS = 'abcdefghijklmnopqrstuvwxyz' 
         elif language in ['ga','ga-IE']:
-            self.DICTIONARY = pickle.load(open('corpus/irish_dict.pickle', 'rb'))
-            self.BIGRAMS = pickle.load(open('corpus/irish_bigram.pickle', 'rb'))
+            self.DICTIONARY = pickle.load(open('../corpus/irish_dict.pickle', 'rb'))
+            self.BIGRAMS = pickle.load(open('../corpus/irish_bigram.pickle', 'rb'))
             self.LETTERS = 'abcdefghilmnoprstuáéíóú'
 
     # Probability of word from dictionary
@@ -38,11 +38,11 @@ class Checker():
     # generate possible spelling correciton for word
     def candidates(self,word):
         if len(word)<5:
-            return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word))  or set([word])
-        elif len(word)>=5 and len(word)<12:
-            return self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
+            return self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
+        elif len(word)>=5 and len(word)<13:
+            return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
         else:
-            return (self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) | self.known(self.edits3(word)) or set([word]))
+            return self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
 
     # in dictionary
     def known(self,words): 
@@ -64,7 +64,7 @@ class Checker():
 
     # two edits away for word
     def edits2(self,word,delete=True):
-        new = self.edits1(word,delete)                               # Get list of all the one edits
+        new = self.edits1(word,delete)                             # Get list of all the one edits
         [new.update(self.edits1(i)) for i in self.edits1(word)]    # Iterate through all the objects in one edit list
         return new 
 
@@ -75,12 +75,16 @@ class Checker():
         return new
 
     # Probability from BIGRAMS Dictionary
-    def checker(self,bigram):
-        second_word_candicate = list(itertools.product([bigram.split()[0]], list(self.candidates(bigram.split()[1]))))
-        possible = [' '.join(list(i)) for i in second_word_candicate]
-        prob = dict(zip(possible,[self.P(i,self.BIGRAMS) for i in possible])) #P[word|word[0]] = P[word[1]] 
-        return {x:y for x,y in dict(Counter(prob).most_common(50)).items() if y != 0} if possible != {} else bigram
+    def check(self,bigram):
+        if len(bigram.split()) < 2:
+            return self.candidates(bigram)
+        else:
+            second_word_candicate = list(itertools.product([bigram.split()[0]], list(self.candidates(bigram.split()[1]))))
+            possible = [' '.join(list(i)) for i in second_word_candicate]
+            prob = dict(zip(possible,[self.P(i,self.BIGRAMS) for i in possible])) #P[word|word[0]] = P[word[1]] 
+            return {x:y for x,y in dict(Counter(prob).most_common(50)).items() if y != 0} if possible != {} else bigram
 
+    # strike words
     def strike(self,text):
         result = ''
         for c in text:
@@ -90,33 +94,37 @@ class Checker():
     # collects grammar corrections and repeated words
     def tool(self,sentence):
         split = sentence.split()
-        corrected = False
         repeated_words = []
         correct_grammar = {}
 
+        # for single words
         if len(split) < 2:
-            correct_grammar[sentence] = self.candidates(sentence)
+            checked = list(self.check(sentence))
+            new_check = checked[:math.ceil(len(checked)*0.9)]
+            if(sentence not in [j for j in new_check]): 
+                correct_grammar[sentence] = self.candidates(sentence)
 
+            self.repeated_words = repeated_words
+            self.correct_grammar = correct_grammar
+            return self.correction(sentence)
+            
+        # for sentence
         else:
             for i in range(len(split)-1):
                 bigram = ' '.join([split[i],split[i+1]])
-                checked = self.checker(bigram)
+                checked = self.check(bigram)
                 new_check = list(checked.keys())[:math.ceil(len(checked)*0.9)]
                 
                 if(split[i]==split[i+1]):
-                    corrected = True
                     repeated_words.append(split[i+1])
 
                 elif(split[i+1] not in [j.split()[1] for j in new_check]): 
-                    corrected = True
                     correct_grammar[bigram] = [k for k in list(new_check)[:10]]
                 
-            if not corrected:
-                return sentence
-        
-        self.repeated_words = repeated_words
-        self.correct_grammar = correct_grammar
-            
+            self.repeated_words = repeated_words
+            self.correct_grammar = correct_grammar
+
+
     # delete word from sentence
     def delete(self,sentence,word):
         return sentence.replace(' '+word,'',1)

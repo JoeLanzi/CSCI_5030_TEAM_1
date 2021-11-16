@@ -1,10 +1,8 @@
 #%%
 import ast
-from langdetect import detect,DetectorFactory
 from preprocess import to_n_gram
-import language_tool_python as lt
+from grammar_checker import Checker
 import pickle
-from hunspell import Hunspell
 
 
 LANGUAGES = ast.literal_eval(open("language_short_names.txt", "r").read())
@@ -13,7 +11,6 @@ class Autocorrect:
     def __init__(self, language = 'en-US') -> None:
         self.language = language
         self.tool = self.load_dictionary() 
-        self._hunspell = Hunspell()
     
     # Detects language
     def language_detect(self,input_string = None) -> str:
@@ -33,36 +30,27 @@ class Autocorrect:
     def load_dictionary(self, language = None):
         language = self.language if language == None else language
         self.language = language
-        return lt.LanguageTool(self.language)
+        return Checker(self.language)
         
-    # Check string 
-    def checker(self,input_string):
-        self.input_string = input_string
-        return self.tool.check(self.input_string)
-
     # word suggession
-    def suggestion(self,single_word): # with probability
-        if not self._hunspell.spell(single_word):
-            return self._hunspell.suggest(single_word)
-        elif len(self._hunspell.suffix_suggest(single_word)) != 0:
-            return self._hunspell.suffix_suggest(single_word)
+    def suggestion(self,input_string): # with probability
+        self.tool.tool(input_string)
+        return [self.tool.repeated_words,self.tool.correct_grammar]
+
 
     # Output Grammer + Spelling correction
     def correct(self,input_string):
         return self.tool.correct(input_string)
 
 # %% Tests
-'''
+
 # language_detect
 correct = Autocorrect()
 correct.language_detect("an lá go mbeidh meáin na Gaeilge agus an Bhéarla ar comhchéim? http://t.co/Fbd9taS via @Twitter slán slán, ag dul chuig rang spin")
 
-# load_dictionary
+# %% load_dictionary
 correct = Autocorrect()
-correct.load_dictionary('ga')
+correct.load_dictionary('en')
 LANGUAGES[correct.language]
 
-# checker
-correct = Autocorrect()
-correct.checker("this is a sample string")
-'''
+
