@@ -126,6 +126,7 @@ class Checker():
         return sentence.replace(word,replacement,1)
 
 # %% TESTS
+'''
 checker = Checker('en')
 
 sample_sentence = "this might be the the end of this sentece"
@@ -139,6 +140,4 @@ print('Delete repeats: ', sample_sentence)
 
 sample_sentence = checker.replace(sample_sentence,list(checker.correct_grammar.keys())[0],list(checker.correct_grammar.values())[0][0])
 print('Replace grammar: ', sample_sentence)
-
-
-# %%
+'''
