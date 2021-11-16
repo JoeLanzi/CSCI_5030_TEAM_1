@@ -18,7 +18,7 @@ class Checker():
             self.BIGRAMS = pickle.load(open('corpus/en_bigram.pickle', 'rb'))
             self.LETTERS = 'abcdefghijklmnopqrstuvwxyz' 
         elif language in ['ga','ga-IE']:
-            self.DICTIONARY = pickle.load(open('corpus/irish_dict.pickle', 'rb'))
+            self.DICTIONARY = pickle.load(open('corpus/irish_unigram.pickle', 'rb'))
             self.BIGRAMS = pickle.load(open('corpus/irish_bigram.pickle', 'rb'))
             self.LETTERS = 'abcdefghilmnoprstuáéíóú'
 
