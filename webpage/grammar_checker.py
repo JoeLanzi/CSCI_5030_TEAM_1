@@ -38,11 +38,11 @@ class Checker():
     # generate possible spelling correciton for word
     def candidates(self,word):
         if len(word)<5:
-            return self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
-        elif len(word)>=5 and len(word)<13:
             return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
-        else:
+        elif len(word)>=5 and len(word)<13:
             return self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
+        else:
+            return self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) | self.known(self.edits3(word)) or set([word])
 
     # in dictionary
     def known(self,words): 
