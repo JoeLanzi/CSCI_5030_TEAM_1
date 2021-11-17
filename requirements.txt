@@ -7,3 +7,4 @@ flask==1.1.2
 lang_tool_python
 cyhunspell
 java==8.0
+python-3.9.6-amd64
