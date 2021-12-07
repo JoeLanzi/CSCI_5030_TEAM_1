@@ -19,8 +19,8 @@ class Checker():
             self.BIGRAMS = pickle.load(open('../corpus/en_bigram.pickle', 'rb'))
             self.LETTERS = 'abcdefghijklmnopqrstuvwxyz' 
         elif language in ['ga','ga-IE']:
-            self.DICTIONARY = pickle.load(open('corpus/irish_unigram.pickle', 'rb'))
-            self.BIGRAMS = pickle.load(open('corpus/irish_bigram.pickle', 'rb'))
+            self.DICTIONARY = pickle.load(open('../corpus/irish_unigram.pickle', 'rb'))
+            self.BIGRAMS = pickle.load(open('../corpus/irish_bigram.pickle', 'rb'))
             self.LETTERS = 'abcdefghilmnoprstuáéíóú'
 
     # Probability of word from dictionary
@@ -38,11 +38,11 @@ class Checker():
     # generate possible spelling correciton for word
     def candidates(self,word):
         if len(word)<5:
-            return self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
+            return self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or set([word])
         elif len(word)>=5 and len(word)<13:
-            return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
+            return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word))  or set([word])
         else:
-            return self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) or self.known(self.edits3(word)) or set([word])
+            return self.known([word]) | self.known(self.edits1(word)) | self.known(self.edits2(word)) or set([word])
 
     # in dictionary
     def known(self,words): 
