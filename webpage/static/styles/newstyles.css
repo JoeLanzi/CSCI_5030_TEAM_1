@@ -1,0 +1,38 @@
+input{
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    background-color: aliceblue;
+}
+
+textarea {
+    font-size: 1.2em;
+    box-shadow: 12px 12px 2px 1px rgb(147 147 147 / 20);
+    border-radius: 10px;
+    text-align: center;
+    resize: none;
+    width:50%; 
+    height:50%;
+}
+
+h1 {
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 2em;
+    color: black;
+}
+
+body {
+    background-color: powderblue;
+    background-image: url('https://cdn.wallpapersafari.com/43/13/Rhn6aP.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.err {
+    text-decoration-color: red;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    white-space: nowrap
+  }
