@@ -31,7 +31,7 @@ def result():
             if sentence.split()[i] == sentence.split()[i+1]:
                 newlist.append('<span class="repeat" style="color: red;"><strike>'+sentence.split()[i]+'</strike></span>')
                 continue
-            elif ' '.join([sentence.split()[i],sentence.split()[i+1]]) in suggestions[1] and sentence.split()[i] not in correctedlist:
+            elif ' '.join([sentence.split()[i],sentence.split()[i+1]]) in suggestions[1] and len(suggestions[1][' '.join([sentence.split()[i],sentence.split()[i+1]])])!=0 and sentence.split()[i] not in correctedlist:
                 correctedlist.append(sentence.split()[i])
                 correctedlist.append(sentence.split()[i+1])
                 newlist.append(sentence.split()[i]) # first word
@@ -46,14 +46,23 @@ def result():
                 newlist.append(sentence.split()[i])
     
     language = LANGUAGES[autocorrect.language]
-    return render_template("index.html",name = language+': '+' '.join(newlist))
+
+    correction = []
+    for i in correctedlist:
+        if len(autocorrect.suggestion(i)[1])!=0:
+            correction.append(autocorrect.suggestion(i)[1])
+
+    return render_template("index.html",name = language+': '+' '.join(newlist),sample=sentence,suggestions=correction)
 
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=True)
 
+
+
+
 '''#%%%%%%%%%%%%%%% TEST %%%%%%%%%%%%%%%%%#
-sentence = 'this is a sample sentence to to see if everuthing is working according to plann'
+sentence = 'this is a sample sentence to to see if everuthing is working accordingn to plann'
 sentence = sentence.lower()
 autocorrect.language_detect(sentence)
 suggestions = autocorrect.suggestion(sentence.lower())
@@ -70,7 +79,7 @@ for i in range(len(sentence.split())):
             newlist.append('<span class="repeat" style="color: red;"><strike>'+sentence.split()[i]+'</strike></span>')
             print('------------- repeat')
             continue
-        elif ' '.join([sentence.split()[i],sentence.split()[i+1]]) in suggestions[1] and sentence.split()[i] not in correctedlist:
+        elif ' '.join([sentence.split()[i],sentence.split()[i+1]]) in suggestions[1] and len(suggestions[1][' '.join([sentence.split()[i],sentence.split()[i+1]])])!=0 and sentence.split()[i] not in correctedlist:
             correctedlist.append(sentence.split()[i+1])
 
             newlist.append(sentence.split()[i]) # first word
@@ -91,4 +100,14 @@ print(correctedlist)
 
 # %%
 print(newlist)
-'''
+
+# %%
+
+def sample():
+    give = []
+    for i in correctedlist:
+        give.append((i , autocorrect.suggestion(i)[1][i]))
+    return(give)
+
+sample()
+# %%'''

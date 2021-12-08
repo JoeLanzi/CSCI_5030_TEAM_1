@@ -26,12 +26,12 @@ function googleTranslateElementInit() {
 
 		<label for="inputtext">Enter your sentence below</label>
 		<br><br>
-		<textarea id="name" name="name" placeholder="Place your text here" rows="15" cols="120" ></textarea>
+		<textarea id="name" name="name" placeholder="Place your text here" rows="15" cols="120" >{% if sample %}{{sample|safe}}{% endif %}</textarea>
 		<br><br>
 
 		<input type="Submit" class="file_submit"></input>
 		
-		<input  type="reset" value="Clear">
+		
 
 		
 		  <p>
@@ -57,9 +57,11 @@ function googleTranslateElementInit() {
 <br>
 		<label for="outputtext"> <b>Output</b> </label>
 		<br><br>
+		<h4> {% if name %}{{name|safe}}{% endif %} </h4>
+		<br><br>
 
-		<h4> 
-					{% if name %}{{name|safe}}{% endif %} </h4>
+		<label for="correction"> <b>Suggestion</b> </label>
+		<h4> {% if suggestions %}{{suggestions|safe}}{% endif %} </h4>
 
 		<br><br>
 		<p>Click the "Submit" button to check spelling and grammar errors</p>
