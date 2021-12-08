@@ -38,7 +38,7 @@ class Checker():
     # generate possible spelling correciton for word
     def candidates(self,word):
         if len(word)<5:
-            return self.known([word]) or self.known(self.edits1(word)) or self.known(self.edits2(word)) or set([word])
+            return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word)) or set([word])
         elif len(word)>=5 and len(word)<13:
             return self.known([word]) | self.known(self.edits1(word)) or self.known(self.edits2(word))  or set([word])
         else:
